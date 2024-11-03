@@ -23,4 +23,14 @@ public class PostController {
     public List<Post> getAllPosts(){
         return postService.findAllPosts();
     }
+
+    @PutMapping("/{id}")
+    public Post updatePost(@PathVariable int id, @RequestBody Post post) {
+        return postService.updatePost(id, post);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable int id) {
+        postService.deletePost(id);
+    }
 }
