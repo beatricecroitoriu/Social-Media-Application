@@ -14,9 +14,9 @@ public class PostController {
     private PostService postService;
 
     @PostMapping
-    public Post create(@RequestBody Post myPost)
+    public Post createPost(@RequestBody Post myPost)
     {
-        return postService.create(myPost);
+        return postService.createPost(myPost);
     }
 
     @GetMapping
@@ -32,5 +32,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable int id) {
         postService.deletePost(id);
+    }
+
+    @GetMapping("/published/{userId}")
+    public List<Post> getAllPublishedPostsForUser(@PathVariable int userId) {
+        return postService.getAllPublishedPostsForUser(userId);
     }
 }

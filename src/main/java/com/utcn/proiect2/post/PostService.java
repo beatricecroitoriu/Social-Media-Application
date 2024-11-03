@@ -13,7 +13,7 @@ public class PostService {
     private PostRepository postRepository;
 
     @Transactional
-    public Post create(Post myPost) {
+    public Post createPost(Post myPost) {
         return postRepository.save(myPost);
     }
 
@@ -33,10 +33,24 @@ public class PostService {
 
     @Transactional
     public void deletePost(int postId) {
-        if (!postRepository.existsById(postId)) {
-            throw new RuntimeException("Post not found");
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        post.setStatus(Status.REMOVED);
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public Post approvePost(int postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (post.getStatus() != Status.PENDING) {
+            throw new RuntimeException("Post cannot be approved as it is not in PENDING status");
         }
-        postRepository.deleteById(postId);
+
+        post.setStatus(Status.PUBLISHED);
+        return postRepository.save(post);
     }
 
     public List<Post> getAllPublishedPostsForUser(int userId) {

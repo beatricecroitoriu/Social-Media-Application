@@ -13,8 +13,12 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Transactional
-    public Comment create(Comment comment) {
+    public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
+    }
+
+    public List<Comment> findAllComments() {
+        return commentRepository.findAll();
     }
 
     @Transactional
