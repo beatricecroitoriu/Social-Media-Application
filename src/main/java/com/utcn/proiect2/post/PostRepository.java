@@ -7,8 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findByUserIdAndStatus(int userId, Status status);
-
-    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId")
-    List<Comment> findCommentsByPostId(@Param("postId") int postId);
+    @Query(value = "SELECT * FROM Post p WHERE p.user_id = :userId AND p.status = 'PUBLISHED'", nativeQuery = true)
+    List<Post> findPublishedPostsByUserId(@Param("userId") int userId);
 }

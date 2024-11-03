@@ -39,15 +39,9 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    //to do UPDATE
-    //to do DELETE
-
     public List<Post> getAllPublishedPostsForUser(int userId) {
-        return postRepository.findByUserIdAndStatus(userId, Status.PUBLISHED);
+        return postRepository.findPublishedPostsByUserId(userId);
     }
 
-    //public List<Comment> getAllCommentsForPost(int postId) {
-     //   return postRepository.findCommentsByPostId(postId);
-   // }
 
 }
