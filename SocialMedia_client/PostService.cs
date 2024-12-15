@@ -37,10 +37,6 @@ namespace SocialMedia_Client2
             return null;
         }
 
-        public void createPost()
-        {
-
-        }
 
         public List<User> GetActiveUsers()
         {
@@ -67,45 +63,41 @@ namespace SocialMedia_Client2
             HttpResponseMessage response = client.PutAsync($"post/{postId}/approve", content).Result;
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Post {postId} approved successfully.");
+                MessageBox.Show($"Post {postId} approved successfully.");
             }
             else
             {
-                Console.WriteLine($"Failed to approve post {postId}: {response.StatusCode}");
+                MessageBox.Show($"Failed to approve post {postId}: {response.StatusCode}");
             }
         }
+   
 
-        public void RemovePost(int postId)
+        public void DeletePost(int postId)
         {
             HttpResponseMessage response = client.DeleteAsync($"post/{postId}").Result;
-            if (response.IsSuccessStatusCode)
+
+            if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Post {postId} removed successfully.");
-            }
-            else
-            {
-                Console.WriteLine($"Failed to remove post {postId}: {response.StatusCode}");
+                throw new Exception("Failed to delete post: " + response.StatusCode);
             }
         }
 
-        public void SendEmailToUsers(List<string> emails)
+        public List<Post> GetPublishedPostsForUser(int userId)
         {
-            var emailPayload = new
-            {
-                recipients = emails
-            };
-            var jsonContent = JsonSerializer.Serialize(emailPayload);
-            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            List<Post> posts = null;
+            HttpResponseMessage response = client.GetAsync($"post/published/{userId}").Result;
 
-            HttpResponseMessage response = client.PostAsync("sendEmail", content).Result;
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Emails sent successfully.");
+                string resultString = response.Content.ReadAsStringAsync().Result;
+                posts = JsonSerializer.Deserialize<List<Post>>(resultString);
             }
             else
             {
-                Console.WriteLine($"Failed to send emails: {response.StatusCode}");
+                Console.WriteLine($"Failed to fetch published posts for user {userId}: {response.StatusCode}");
             }
+
+            return posts;
         }
 
 
