@@ -1,0 +1,6 @@
+com\utcn\proiect2\Proiect2Application.class
+com\utcn\proiect2\user\User.class
+com\utcn\proiect2\post\Status.class
+com\utcn\proiect2\comment\Comment.class
+com\utcn\proiect2\comment\CommentController.class
+com\utcn\proiect2\post\Post.class
